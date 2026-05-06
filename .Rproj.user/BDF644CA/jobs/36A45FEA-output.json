@@ -1,0 +1,3 @@
+[1,"==> quarto preview ets5513_assign2.qmd --to html --no-watch-inputs --no-browse\n\n"]
+[1,"\u001B[1mpandoc \u001B[22m\n  to: html\n  output-file: ets5513_assign2.html\n  standalone: true\n  section-divs: true\n  html-math-method: mathjax\n  wrap: none\n  default-image-extension: png\n  variables: {}\n  \n\u001B[1mmetadata\u001B[22m\n  document-css: false\n  link-citations: true\n  date-format: long\n  lang: en\n  title: example\n  editor: visual\n  author: Sum Yee Chong\n  \n"]
+[1,"Output created: ets5513_assign2.html\n\n\u001B[32mWatching files for changes\u001B[39m\n\u001B[32mBrowse at \u001B[39m\u001B[4m\u001B[32mhttp://localhost:5113/ets5513_assign2.html\u001B[39m\u001B[24m\nListening on http://127.0.0.1:5113/\n"]

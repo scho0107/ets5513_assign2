@@ -1,0 +1,329 @@
+---
+title: "My Git and GitHub Guide"
+author: "Your Name"
+date: today
+format: html
+---
+
+## Introduction
+
+In this guide, I walk through the process of using `git`, GitHub, and the command line interface (CLI) to manage a project with version control. I treat each step as a diary entry, explaining not just what I did, but **why** I did it and what it achieves. My goal is to show that I understand how these tools work together for reproducible and collaborative data science.
+
+---
+
+## Step 1: Setting Up the Project and Creating `example.qmd`
+
+The first thing I did was create a new project in Positron via **File > New Project**. I chose to create it as a new directory called `assignment2`. This gave me a clean, self-contained folder to work in — which is important for reproducibility, because keeping all project files in one place means anyone can open the project and everything will work relative to that root folder.
+
+Inside the project, I created this file, `example.qmd`. A `.qmd` file is a Quarto Markdown document — it lets me mix written text with R code chunks, and then render everything into a formatted HTML report. I rendered the file using the **Render** button (or by running `quarto render example.qmd` in the terminal), which produced `example.html`.
+
+Here is a simple piece of R code I included to confirm the document renders correctly:
+
+```{r}
+summary(cars)
+```
+
+Seeing the rendered HTML output confirmed that my Quarto setup was working properly before I started doing anything with git.
+
+---
+
+## Step 2: Initialising Git and Pushing to GitHub
+
+Once I had a working project, I wanted to put it under version control. Version control lets me track every change I make over time, so I can always go back to an earlier version if something breaks. I also wanted to push it to GitHub so it is backed up remotely and could be shared with collaborators.
+
+I opened the terminal and ran the following commands one by one:
+
+```bash
+# Initialise this folder as a git repository
+git init
+```
+
+`git init` creates a hidden `.git` folder inside my project directory. This folder is where git stores all the version history and configuration. Without this step, git has no idea this folder is a repository.
+
+```bash
+# Tell git who I am (only needed once per machine)
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+```
+
+I set my identity so that every commit is attributed to me. This matters in collaborative settings where multiple people are committing to the same repository.
+
+```bash
+# Stage all files in the project for the first commit
+git add .
+```
+
+`git add .` stages everything in the current directory. Staging means I am telling git "these are the changes I want to include in the next commit." Think of it like putting items into a box before sealing it — I can choose exactly what goes in before I commit.
+
+```bash
+# Create the first commit
+git commit -m "Initial commit: add project files and example.qmd"
+```
+
+`git commit` takes a snapshot of everything that is staged and saves it permanently to the history. The `-m` flag lets me write a short message describing what this commit contains. Clear commit messages are important — they help me (and others) understand what changed and why, without having to read through all the code.
+
+```bash
+# Link the local repository to a new GitHub repository
+git remote add origin https://github.com/yourusername/assignment2.git
+
+# Push the commit to GitHub
+git push -u origin main
+```
+
+`git remote add origin` tells my local git where the remote repository lives — in this case, on GitHub. `git push -u origin main` uploads my commit to GitHub and sets `origin/main` as the default remote branch so that future `git push` commands on `main` know where to go automatically.
+
+---
+
+## Step 3: Creating `testbranch`, Making Changes, and Pushing
+
+At this point, I wanted to experiment with changes to `example.qmd` without touching the stable version on `main`. This is exactly what **branches** are for — they let me work on something new in isolation, and only merge it back when I am happy with it.
+
+```bash
+# Create a new branch called testbranch and switch to it immediately
+git checkout -b testbranch
+```
+
+`git checkout -b testbranch` does two things at once: it creates the branch and switches me to it. From this point on, any commits I make will go onto `testbranch`, not `main`. The `main` branch remains exactly as it was.
+
+I then opened `example.qmd` and added a new section — a short paragraph introducing the cars dataset. After saving the file:
+
+```bash
+# Stage the modified file
+git add example.qmd
+
+# Commit the change with a descriptive message
+git commit -m "Add dataset introduction section to example.qmd on testbranch"
+```
+
+```bash
+# Push testbranch to GitHub and set up tracking
+git push -u origin testbranch
+```
+
+I pushed `testbranch` to GitHub with `-u origin testbranch` so that this branch also exists on the remote. This means a collaborator could also see and work on `testbranch` from their own machine.
+
+---
+
+## Step 4: Adding the Data Folder and Amending the Commit
+
+After committing, I realised I also needed to add a `data` folder containing the data from Assignment 1. Rather than creating a separate new commit just for the data (which would clutter the history), I decided to **amend** the previous commit to include it. Amending is like going back and fixing the last commit before anyone else has based work on it.
+
+```bash
+# Create the data folder and copy in the Assignment 1 data file
+mkdir data
+cp /path/to/your/assignment1data.csv data/
+```
+
+```bash
+# Stage the new data folder
+git add data/
+```
+
+```bash
+# Amend the previous commit to include the data folder
+# --no-edit means I keep the same commit message as before
+git commit --amend --no-edit
+```
+
+`git commit --amend` rewrites the most recent commit to include whatever is newly staged. The commit hash changes as a result, because the content of the commit has changed. This is why I cannot just do a regular `git push` — the remote and local histories now differ.
+
+```bash
+# Force push to update the remote with the amended commit
+git push --force origin testbranch
+```
+
+I used `git push --force` to overwrite the old commit on GitHub with the new amended one. I was careful to only use `--force` here because I am the only person working on `testbranch` — force pushing on a shared branch could erase other people's work, which is why it should always be used with caution.
+
+---
+
+## Step 5: Switching to `main` and Creating a Conflicting Change
+
+Now I switched back to `main` to make a change that would deliberately conflict with what I did on `testbranch`. This is so I can practise identifying and resolving merge conflicts — a skill that is essential when collaborating with others.
+
+```bash
+# Switch back to the main branch
+git checkout main
+```
+
+I modified the **same lines** in `example.qmd` that I had changed on `testbranch`, but wrote something different. For example, where `testbranch` had added "This dataset contains car speed data", I wrote "This section explores the cars dataset" on `main` instead. By editing the same section differently on both branches, I ensured git would not be able to automatically choose one version over the other.
+
+```bash
+# Stage the modified file
+git add example.qmd
+
+# Commit with a clear message
+git commit -m "Modify example.qmd on main: update dataset description"
+
+# Push to GitHub
+git push origin main
+```
+
+This commit now lives on `main`, while a different version of the same lines exists on `testbranch`. The stage is set for a merge conflict.
+
+---
+
+## Step 6: Merging `testbranch` into `main` and Resolving the Conflict
+
+With conflicting changes on both branches, I attempted to merge `testbranch` into `main`:
+
+```bash
+# Make sure I am on main
+git checkout main
+
+# Attempt the merge
+git merge testbranch
+```
+
+Git immediately detected a conflict and printed:
+
+```
+Auto-merging example.qmd
+CONFLICT (content): Merge conflict in example.qmd
+Automatic merge failed; fix conflicts then commit the result.
+```
+
+When I opened `example.qmd`, I saw the conflict markers git had inserted:
+
+```
+<<<<<<< HEAD
+This section explores the cars dataset
+=======
+This dataset contains car speed data
+>>>>>>> testbranch
+```
+
+The section between `<<<<<<< HEAD` and `=======` is what is on `main`. The section between `=======` and `>>>>>>> testbranch` is what came from `testbranch`. Git cannot decide which version is correct, so it leaves the decision to me.
+
+I resolved the conflict by combining both versions into one sentence that made sense:
+
+```
+This section explores the cars dataset, which contains car speed data.
+```
+
+I removed the conflict markers entirely, saved the file, and completed the merge:
+
+```bash
+# Stage the resolved file
+git add example.qmd
+
+# Complete the merge with a commit
+git commit -m "Resolve merge conflict: combine dataset descriptions from main and testbranch"
+
+# Push the resolved merge to GitHub
+git push origin main
+```
+
+On GitHub, I could now see that both branches had been successfully merged, with the full commit history preserved.
+
+---
+
+## Step 7: Tagging the Commit as `v1.0`
+
+Now that the merge was complete and the project was in a clean, stable state, I wanted to mark this point in history as version 1.0. Git **tags** let me attach a meaningful label to a specific commit so I (and collaborators) can find it easily later — for example, when a project reaches a milestone or a public release.
+
+```bash
+# Create an annotated tag on the current commit
+git tag -a v1.0 -m "Version 1.0: project complete, merge conflict resolved"
+
+# Push the tag to GitHub
+git push origin v1.0
+```
+
+I used an **annotated tag** (`-a`) rather than a lightweight tag because annotated tags store extra information: the tagger's name, email, date, and a message. This makes them more informative for marking releases. Tags are not pushed automatically with a regular `git push`, so I had to push the tag explicitly with `git push origin v1.0`.
+
+---
+
+## Step 8: Deleting `testbranch` Locally and on the Remote
+
+Since `testbranch` had been fully merged into `main` and the project was tagged, the branch was no longer needed. Keeping old branches around can make the repository confusing over time, especially in large collaborative projects, so I deleted it from both my local machine and from GitHub.
+
+```bash
+# Delete testbranch locally
+# -d is the safe flag: only deletes if the branch has been merged
+git branch -d testbranch
+
+# Delete testbranch from GitHub
+git push origin --delete testbranch
+```
+
+I used `git branch -d` (lowercase d) rather than `-D` because the lowercase version checks that the branch has been merged before deleting. If I had tried to delete an unmerged branch, git would have warned me — this protects against accidentally deleting work that has not yet been integrated.
+
+---
+
+## Step 9: Viewing the Commit Log in Condensed Form
+
+To get a clear overview of everything I had done throughout this project, I ran the following command in the terminal:
+
+```bash
+git log --oneline --graph --all
+```
+
+This produced output similar to:
+
+```
+* a3f1c2d (HEAD -> main, tag: v1.0, origin/main) Resolve merge conflict: combine dataset descriptions
+* 8b2e4a1 Modify example.qmd on main: update dataset description  
+* 5d9c7f3 Add dataset introduction section to example.qmd on testbranch
+* 1a4b8e2 Initial commit: add project files and example.qmd
+```
+
+`--oneline` shows each commit on a single line with its short hash and message, which makes it easy to scan. `--graph` draws a simple text diagram showing where branches diverged and merged. `--all` includes commits from every branch, not just the current one. Together, these flags give a clear and compact picture of the entire project history.
+
+---
+
+## Step 10: Adding a Plot, Committing, and Undoing the Commit
+
+For the final step, I added a new section to `example.qmd` containing a simple plot:
+
+```{r}
+# A simple scatter plot to demonstrate adding new content
+plot(pressure,
+     main = "Vapour Pressure of Mercury vs Temperature",
+     xlab = "Temperature (°C)",
+     ylab = "Pressure (mm Hg)",
+     col = "steelblue",
+     pch = 16)
+```
+
+I then staged and committed the change as usual:
+
+```bash
+git add example.qmd
+git commit -m "Add pressure plot section to example.qmd"
+```
+
+Then I practised undoing this commit **without losing** the changes I had made to the file:
+
+```bash
+# Undo the last commit, but keep the file changes in the working directory
+git reset HEAD~1
+```
+
+`git reset HEAD~1` moves the branch pointer back by one commit, which removes the commit from the history. Because I did not use the `--hard` flag, the default behaviour (`--mixed`) leaves my file changes intact in the working directory — the plot code is still in `example.qmd`, it is just no longer part of any commit. This is useful when I want to revise a commit before pushing, or when I accidentally committed something I was not ready to save yet.
+
+I confirmed it worked by running:
+
+```bash
+git log --oneline   # The plot commit is gone from history
+git status          # example.qmd shows as modified but unstaged
+```
+
+Both outputs confirmed that the commit had been removed but the file content was preserved — exactly what `git reset HEAD~1` is supposed to do.
+
+---
+
+## Summary
+
+Throughout this guide, I have demonstrated the following git skills and the reasoning behind each one:
+
+- **`git init` + `git remote add`** — setting up version control and connecting to GitHub
+- **`git add` + `git commit`** — staging and saving snapshots of work with clear messages
+- **`git checkout -b`** — creating branches to isolate changes safely
+- **`git commit --amend`** — rewriting the last commit to keep history clean
+- **`git merge` + conflict resolution** — combining branches and manually fixing conflicts
+- **`git tag -a`** — marking important milestones with annotated tags
+- **`git branch -d` + `git push --delete`** — cleaning up merged branches safely
+- **`git log --oneline --graph --all`** — reading a compact view of project history
+- **`git reset HEAD~1`** — undoing a commit while preserving local changes
+
+Each of these tools has a specific purpose, and understanding *why* to use each one — not just *how* — is what allows me to collaborate effectively and maintain a clean, understandable project history.
