@@ -1,0 +1,20 @@
+---
+title: "example"
+format: html
+editor: visual
+author: Sum Yee Chong
+---
+
+## Step 1: Create Rstudio Project and `example.qmd`
+
+## Step 2: Initialising Git and Pushing to GitHub
+
+## Step 3: Creating `testbranch`, Making Changes, and Pushing
+
+# Test branch section
+
+This section was added on testbranch.
+
+# Conflict section
+
+This sentence was written on the main branch.
