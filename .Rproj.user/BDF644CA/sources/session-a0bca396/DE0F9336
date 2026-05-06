@@ -1,24 +1,26 @@
 {
-    "id": "C83BFD3C",
-    "path": "~/Downloads/example_2.qmd",
+    "id": "DE0F9336",
+    "path": "~/Downloads/example_4.qmd",
     "project_path": null,
     "type": "quarto_markdown",
     "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1778044334008.0,
+    "created": 1778059101392.0,
     "source_on_save": false,
-    "relative_order": 3,
+    "relative_order": 2,
     "properties": {
         "source_window_id": "",
-        "Source": "Source"
+        "Source": "Source",
+        "cursorPosition": "209,0",
+        "scrollLine": "198"
     },
     "folds": "",
-    "lastKnownWriteTime": 1778044333,
+    "lastKnownWriteTime": 1778059101,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1778044333,
+    "last_content_update": 1778059101,
     "read_only": false,
     "read_only_alternatives": []
 }
