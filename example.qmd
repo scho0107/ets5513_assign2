@@ -77,30 +77,57 @@ git push --force-with-lease origin testbranch
 
 The terminal confirmed the branch was force updated:
 
-![](images/clipboard-1429351006.png)
+![](images/clipboard-1429351006.png){width="605" height="29"}
 
 ## Step 5: Switch to `main` and Create a Conflicting Change
 
+I switched back to `main` and edited `example.qmd` in a different way to what I had done on `testbranch`, so that merging the two branches would produce a conflict:
+
 ``` bash
 git switch main
-git status
 git add example.qmd
 git commit -m "Edit example file on main"
 git push origin main
 ```
 
+On `testbranch` I had added a section titled "Test branch section", and on `main` I added a section titled "Conflict section" in the same location. This means both branches modified the same part of the file differently, which will cause a conflict when merged.
+
+Here's the section created:
+
+# Test branch section
+
+This section was added on testbranch.
+
+# Conflict section
+
+This sentence was written on the main branch.
+
 ## Step 6: Merge `testbranch` into `main` and Resolving the Conflict
+
+I merged the branch:
 
 ``` bash
 git switch main
 git merge testbranch
 ```
 
+Git detected a conflict and stopped:
+
+![](images/clipboard-649728661.png){width="547"}
+
+When I opened `example.qmd`, I could see the conflict markers:
+
+![](images/clipboard-2932239969.png){width="479"}
+
+The section under `<<<<<<< HEAD` is what `main` added — the "Conflict section". The `testbranch` side is empty because that section did not exist on `testbranch`. Git flagged this as a conflict because both branches modified the same area of the file differently. I resolved it by keeping the content from `main` and removing the conflict markers, then finalised the merge:
+
 ``` bash
 git add example.qmd
 git commit -m "Resolve merge conflict between main and testbranch"
 git push origin main
 ```
+
+The push output confirmed the merge was successfully uploaded to GitHub.
 
 ## Step 7: Tag the Commit as `v1.0`
 
