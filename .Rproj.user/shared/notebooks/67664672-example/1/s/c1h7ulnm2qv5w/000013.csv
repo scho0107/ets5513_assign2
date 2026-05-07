@@ -1,4 +1,0 @@
-"0","plot(mtcars$wt, mtcars$mpg,"
-"0","     xlab = ""Weight"","
-"0","     ylab = ""Miles per gallon"","
-"0","     main = ""Simple plot of mtcars"")"

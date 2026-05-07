@@ -3,9 +3,9 @@
     "path": "~/Desktop/monash university/master yr 1 sem 1/etc5513/assignment 2/ets5513_assign2/example.qmd",
     "project_path": "example.qmd",
     "type": "quarto_markdown",
-    "hash": "0",
+    "hash": "2195335806",
     "contents": "",
-    "dirty": false,
+    "dirty": true,
     "created": 1778071646747.0,
     "source_on_save": false,
     "relative_order": 4,
@@ -15,18 +15,18 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "1,11",
+        "cursorPosition": "202,0",
         "scrollLine": "0",
         "docOutlineVisible": "1",
         "rmdVisualCollapsedChunks": "",
-        "rmdVisualModeLocation": "180:145.55555725097656"
+        "rmdVisualModeLocation": "6216:3740"
     },
     "folds": "",
     "lastKnownWriteTime": 1778073092,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1778073092953,
+    "last_content_update": 1778147854085,
     "read_only": false,
     "read_only_alternatives": []
 }

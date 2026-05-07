@@ -7,19 +7,36 @@ author: Sum Yee Chong
 
 ## Step 1: Create Rstudio Project and `example.qmd`
 
+I created a new RStudio Project and named it `etc5513_assign2`. Using an RStudio Project keeps all files organised in one place and ensures file paths are relative to the project folder.
+
+Inside the project I created this file, `example.qmd`, and rendered it to HTML using the **Render** button in RStudio. This confirms the file works properly and can be reproduced.
+
 ## Step 2: Initialise Git and Push to GitHub
+
+To start tracking changes, I initialised the project as a Git repository:
 
 ``` bash
 git init
 ```
 
+This creates a hidden `.git` folder where git stores all version history. I then staged and committed all files:
+
 ``` bash
 git add .
 git commit -m "create qmd file"
+```
+
+`git add .` stages everything in the folder. `git commit` saves a snapshot with a message describing what was included.
+
+Next, I renamed the branch to `main`, connected the repository to GitHub, and pushed:
+
+``` bash
 git branch -M main
 git remote add origin git@github.com:scho0107/ets5513_assign2.git 
 git push -u origin main 
 ```
+
+`git branch -M main` renames the default branch to `main`. `git remote add origin` links the local repo to GitHub, and `git push -u origin main` uploads the commit and sets up tracking so future pushes work automatically.
 
 ## Step 3: Create `testbranch`, Make Changes, and Push
 
