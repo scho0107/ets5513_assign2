@@ -40,9 +40,13 @@ git push -u origin main
 
 ## Step 3: Create `testbranch`, Make Changes, and Push
 
+Instead of working directly on `main`, I created a new branch to keep changes isolated:
+
 ``` bash
 git switch -c testbranch
 ```
+
+I then edited `example.qmd` by adding a new section. I first ran `git status` to check what had changed, then staged and committed only the intended file:
 
 ``` bash
 git status
@@ -51,14 +55,29 @@ git commit -m "Add section on testbranch"
 git push -u origin testbranch
 ```
 
+The push output confirmed that `testbranch` was created on GitHub and set up to track the remote branch.
+
 ## Step 4: Add the Data Folder and Amend the Commit
+
+After committing, I added a `data` folder containing the dataset from Assignment 1. I created the folder, copied the CSV file in manually, and then amended the previous commit rather than creating a separate one:
 
 ``` bash
 mkdir data
 git add data
 git commit --amend --no-edit
+```
+
+`git commit --amend` rewrites the last commit to include the newly staged files. `--no-edit` keeps the original commit message. The output confirmed that `data/33234027_Sum Chong.csv` was included in the amended commit.
+
+Because amending changes the commit hash, a normal push would be rejected, so I used:
+
+``` bash
 git push --force-with-lease origin testbranch
 ```
+
+The terminal confirmed the branch was force updated:
+
+![](images/clipboard-1429351006.png)
 
 ## Step 5: Switch to `main` and Create a Conflicting Change
 
