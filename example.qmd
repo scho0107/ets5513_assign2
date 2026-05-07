@@ -131,17 +131,33 @@ The push output confirmed the merge was successfully uploaded to GitHub.
 
 ## Step 7: Tag the Commit as `v1.0`
 
+To mark this stable version of the project, I created an annotated tag:
+
 ``` bash
 git tag -a v1.0 -m "Version 1.0: project complete, merge conflict resolved"
 git push origin v1.0
 ```
 
+The output confirmed the tag was pushed: `* [new tag] v1.0 -> v1.0`. Annotated tags store extra information such as the date and message, making them more useful than lightweight tags for marking milestones. Tags are not included in a regular `git push`, so I pushed it separately.
+
+Output:
+
+![](images/clipboard-2839569836.png)
+
 ## Step 8: Delete `testbranch` Locally and on the Remote
+
+Since `testbranch` had been merged into `main`, I deleted it from both places:
 
 ``` bash
 git branch -d testbranch
 git push origin --delete testbranch
 ```
+
+The terminal confirmed: `Deleted branch testbranch (was 4217d89)` and `- [deleted] testbranch`. I used `git branch -d` (lowercase) because it checks the branch has been merged before deleting, which prevents accidental data loss.
+
+Output:
+
+![](images/clipboard-1833770430.png)
 
 ## Step 9: Show commit log
 
